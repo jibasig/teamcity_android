@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+
+## TEAMCITY SERVER + AGENT ##
+
+  teamcity-server:
+    image: jetbrains/teamcity-server
+    container_name: teamcity-server
+    ports:
+      - "8111:8111"
+
+    volumes:
+### change volume mounts to your needs ####
+      - ./volume/data:/data/teamcity_server/datadir
+      - ./volume/logs:/opt/teamcity/logs
+
+  teamcity-agent:
+    build: android-agent
+    container_name: teamcity-agent
+    environment:
+      - SERVER_URL=http://teamcity-server:8111
+      - AGENT_NAME=regular_agent
+
+
